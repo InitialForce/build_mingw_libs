@@ -1,4 +1,4 @@
-if [ ! $# -le 5 ]; then
+if [ ! $# -le 6 ]; then
   echo "Usage: $0 ffms2-dir ffmpeg-name 32/64 shared/static release/debug name"
   exit
 fi
@@ -11,10 +11,10 @@ BUILDTYPE=$5
 NAME=$6
 
 if  [ "$BUILDBITS" -eq "32" ]; then
-  TARGET=i686 
+  TARGET=i686-w64-mingw32.shared
   ARCH=x86
 elif [ "$BUILDBITS" -eq "64" ]; then
-  TARGET=x86_64
+  TARGET=x86_64-w64-mingw32.shared
   ARCH=x86_64
   export WINEPREFIX=/home/swingcatalyst/wine_64 
   export WINEARCH=x64
@@ -47,11 +47,13 @@ BASEDIR=$(dirname $(pwd -P $0)/${0#\.\/})
 BUILDNAME=$NAME-$TARGET-$LINKTYPE-$BUILDTYPE
 
 
-BUILDDIR=$BASEDIR/build/$BUILDNAME-build
-INSTALLDIR=$BASEDIR/install/$BUILDNAME-install
+BUILDDIR=$BASEDIR/build/$BUILDNAME
+INSTALLDIR=$BASEDIR/install/$BUILDNAME
 
 FFMPEGBUILDNAME=$FFMPEGDIR-$TARGET-$LINKTYPE-$BUILDTYPE
-FFMPEGINSTALLDIR=$BASEDIR/install/$FFMPEGBUILDNAME-install
+FFMPEGINSTALLDIR=$BASEDIR/install/$FFMPEGBUILDNAME
+
+echo $FFMPEGINSTALLDIR
 
 MXEROOT=$BASEDIR/mxe
 
@@ -77,8 +79,8 @@ $LINKTYPEPARAMS \
 $BUILDTYPEPARAMS \
 --enable-fast-install \
 --prefix=$INSTALLDIR \
---host="$TARGET-w64-mingw32.shared" \
---build="$TARGET-w64-mingw32.shared" 
+--host="$TARGET" \
+--build="$TARGET" 
 #--with-zlib=$MXEROOT/usr/$ARCH-static-mingw32/ \
 #LIBAV_LIBS="
 #$BASEDIR/$1/configure \

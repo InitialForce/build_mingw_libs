@@ -71,8 +71,10 @@ BUILDNAME=$NAME-$TARGET-$LINKTYPE-$BUILDTYPE
 
 echo "Building $BUILDNAME"
 
-BUILDDIR=$BASEDIR/build/$BUILDNAME-build
-INSTALLDIR=$BASEDIR/install/$BUILDNAME-install
+BUILDDIR=$BASEDIR/build/$BUILDNAME
+echo $BUILDDIR
+INSTALLDIR=$BASEDIR/install/$BUILDNAME
+echo $INSTALLDIR
 
 MXEROOT=$BASEDIR/mxe
 
@@ -127,9 +129,10 @@ echo INSTALLING
 make install
 
 TARGET_BINDIR=$MXEROOT/usr/$TARGET/bin
+echo $TARGET_BINDIR
 
 for v in "libstdc" "libspeex" "SDL" "libiconv" "libtheora" "libvorbis" "libmp3lame" "zlib" "libbz" "libogg" "libfreetype" "icule" "libffi" "libgcc" "libglib" "libgobject" "libharfbuzz" "libintl" "libpng" "libpcre"; do
-    /bin/cp "$TARGET_$BINDIR"/$v*.dll "$INSTALLDIR/bin"
+    /bin/cp "$TARGET_BINDIR"/$v*.dll "$INSTALLDIR/bin"
 done
 
 if $do_manual_strip ; then
